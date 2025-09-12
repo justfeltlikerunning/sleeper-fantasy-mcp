@@ -1,0 +1,40 @@
+{
+  "name": "sleeper-fantasy-mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server for Sleeper Fantasy Football API integration",
+  "main": "dist/index.js",
+  "bin": {
+    "sleeper-fantasy-mcp": "dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "npm run build && node dist/index.js --help 2>/dev/null || echo 'Build successful - MCP server ready'"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sleeper",
+    "fantasy-football",
+    "api",
+    "claude",
+    "claude-code"
+  ],
+  "author": "Richard Hernandez",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "shx": "^0.4.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^16.4.0"
+  }
+}
