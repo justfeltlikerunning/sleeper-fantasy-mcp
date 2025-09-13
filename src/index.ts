@@ -16,6 +16,7 @@ import { MatchupProjectionsTool } from "./tools/MatchupProjectionsTool.js";
 import { LineupOptimizerTool } from "./tools/LineupOptimizerTool.js";
 import { TrendingTool } from "./tools/TrendingTool.js";
 import { HistoricalScoresTool } from "./tools/HistoricalScoresTool.js";
+import { PlayerNewsTool } from "./tools/PlayerNewsTool.js";
 
 const leagueTool = new LeagueTool();
 const rosterTool = new RosterTool();
@@ -26,6 +27,7 @@ const matchupProjectionsTool = new MatchupProjectionsTool();
 const lineupOptimizerTool = new LineupOptimizerTool();
 const trendingTool = new TrendingTool();
 const historicalScoresTool = new HistoricalScoresTool();
+const playerNewsTool = new PlayerNewsTool();
 
 const server = new Server(
   {
@@ -50,6 +52,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     lineupOptimizerTool,
     trendingTool,
     historicalScoresTool,
+    playerNewsTool,
   ],
 }));
 
@@ -76,6 +79,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return await trendingTool.execute(args);
       case "get_historical_scores":
         return await historicalScoresTool.execute(args);
+      case "get_player_news":
+        return await playerNewsTool.execute(args);
       default:
         throw new Error(`Unknown tool: ${name}`);
     }
