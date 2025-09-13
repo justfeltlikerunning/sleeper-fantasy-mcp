@@ -17,6 +17,8 @@ import { LineupOptimizerTool } from "./tools/LineupOptimizerTool.js";
 import { TrendingTool } from "./tools/TrendingTool.js";
 import { HistoricalScoresTool } from "./tools/HistoricalScoresTool.js";
 import { PlayerNewsTool } from "./tools/PlayerNewsTool.js";
+import { TransactionsTool } from "./tools/TransactionsTool.js";
+import { StateScheduleTool } from "./tools/StateScheduleTool.js";
 
 const leagueTool = new LeagueTool();
 const rosterTool = new RosterTool();
@@ -28,6 +30,8 @@ const lineupOptimizerTool = new LineupOptimizerTool();
 const trendingTool = new TrendingTool();
 const historicalScoresTool = new HistoricalScoresTool();
 const playerNewsTool = new PlayerNewsTool();
+const transactionsTool = new TransactionsTool();
+const stateScheduleTool = new StateScheduleTool();
 
 const server = new Server(
   {
@@ -53,6 +57,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     trendingTool,
     historicalScoresTool,
     playerNewsTool,
+    transactionsTool,
+    stateScheduleTool,
   ],
 }));
 
@@ -81,6 +87,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return await historicalScoresTool.execute(args);
       case "get_player_news":
         return await playerNewsTool.execute(args);
+      case "get_league_transactions":
+        return await transactionsTool.execute(args);
+      case "get_nfl_state":
+        return await stateScheduleTool.execute(args);
       default:
         throw new Error(`Unknown tool: ${name}`);
     }

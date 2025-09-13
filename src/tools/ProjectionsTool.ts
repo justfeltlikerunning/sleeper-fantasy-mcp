@@ -84,31 +84,39 @@ export class ProjectionsTool {
       }
       const players = await playersResponse.json();
 
-      // Simplified approach - fetch projections sequentially to avoid race conditions
-      const projectionResults: any[] = [];
+      // Use bulk projections endpoint for better performance
+      let allProjections: any[] = [];
       
-      for (const playerId of playerIds) {
-        try {
-          const url = `https://api.sleeper.app/projections/nfl/player/${playerId}?season=${season}&season_type=regular&week=${week}`;
-          const response = await fetch(url);
-          
-          if (response.ok) {
-            const data = await response.json();
-            projectionResults.push(data);
-          } else {
-            projectionResults.push(null);
-          }
-        } catch (error) {
-          projectionResults.push(null);
+      if (args.position) {
+        // Fetch for specific position only
+        const url = `https://api.sleeper.app/projections/nfl/${season}/${week}?season_type=regular&position[]=${args.position}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          allProjections = await response.json();
         }
+      } else {
+        // Fetch for all fantasy positions
+        const positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
+        const projectionPromises = positions.map(pos => 
+          fetch(`https://api.sleeper.app/projections/nfl/${season}/${week}?season_type=regular&position[]=${pos}`)
+            .then(res => res.ok ? res.json() : [])
+            .catch(() => [])
+        );
+        
+        const positionProjections = await Promise.all(projectionPromises);
+        allProjections = positionProjections.flat();
       }
+      
+      // Create a map for quick lookup
+      const projectionMap = new Map(
+        allProjections.map(proj => [proj.player_id, proj])
+      );
 
       // Filter and format player projections
       const playerProjections = [];
       
-      for (let i = 0; i < playerIds.length; i++) {
-        const playerId = playerIds[i];
-        const projectionData = projectionResults[i];
+      for (const playerId of playerIds) {
+        const projectionData = projectionMap.get(playerId);
         const player = players[playerId];
         
         if (!player) continue;
