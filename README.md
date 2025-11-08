@@ -2,6 +2,10 @@
 
 A Model Context Protocol (MCP) server for integrating Sleeper Fantasy Football with Claude Code. Get comprehensive fantasy analytics, player projections, historical performance, and league management directly through Claude.
 
+<a href="https://glama.ai/mcp/servers/@justfeltlikerunning/sleeper-fantasy-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@justfeltlikerunning/sleeper-fantasy-mcp/badge" alt="Sleeper Fantasy MCP server" />
+</a>
+
 ## Features
 
 🏈 **Complete Fantasy Analytics**
